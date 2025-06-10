@@ -1,8 +1,6 @@
 REMAINING SERVER CODE:
-1. Make auth middleware to handle JWT tokens from client.
 2. Finish task endpoints.
 3. Cleanup server code.
-4. Create docker build file.
 
 REMAINING REACT CODE:
 1. Build React app.
