@@ -12,17 +12,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var secret, secretErr = jwt.ParseRSAPrivateKeyFromPEM([]byte("PLACE PEM ENCODED KEY HERE"))
-
 type UserInfo struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8,max=72"`
 }
 
 func (env *Env) CreateUser(cntxt *gin.Context) {
-	if secretErr != nil {
-		log.Println(secretErr.Error())
-	}
 	// Validate request body
 	var data UserInfo
 	if err := cntxt.ShouldBindJSON(&data); err != nil {
@@ -59,7 +54,7 @@ func (env *Env) CreateUser(cntxt *gin.Context) {
 			ID:        newUser.ID.String(),
 		}
 		token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-		sToken, err := token.SignedString(secret)
+		sToken, err := token.SignedString(env.SecretKey)
 		if err != nil {
 			log.Println("Encountered error during token creation: " + err.Error())
 			cntxt.JSON(500, gin.H{"error": "Encountered unexpected error. Please try again later or contact the system administrator."})
@@ -81,9 +76,6 @@ func (env *Env) CreateUser(cntxt *gin.Context) {
 }
 
 func (env *Env) CreateToken(cntxt *gin.Context) {
-	if secretErr != nil {
-		log.Println(secretErr.Error())
-	}
 	// Validate request body
 	var data UserInfo
 	if err := cntxt.ShouldBindJSON(&data); err != nil {
@@ -128,7 +120,7 @@ func (env *Env) CreateToken(cntxt *gin.Context) {
 		ID:        user.ID.String(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	sToken, err := token.SignedString(secret)
+	sToken, err := token.SignedString(env.SecretKey)
 	if err != nil {
 		log.Println("Encountered error during token creation: " + err.Error())
 		cntxt.JSON(500, gin.H{"error": "Encountered unexpected error. Please try again later or contact the system administrator."})

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"task-manager-server-go/models"
 
@@ -21,14 +22,29 @@ type GetParams struct {
 	CategoryFilter string `form:"categoryFilter"`
 }
 
+func (env *Env) GetUserID(cntxt *gin.Context) (uuid.UUID, error) {
+	userID, ok := cntxt.Get("userID")
+	if !ok {
+		var placeholder uuid.UUID
+		return placeholder, fmt.Errorf("could not find userID in context")
+	}
+	return uuid.Parse(userID.(string))
+}
+
 func (env *Env) CreateTask(cntxt *gin.Context) {
-	// 6c196332-778a-41f9-ba4f-c4291d16e242
 	var data TaskBody
 	if err := cntxt.ShouldBindJSON(&data); err != nil {
 		cntxt.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	userID := uuid.MustParse("6c196332-778a-41f9-ba4f-c4291d16e242")
+
+	userID, err := env.GetUserID(cntxt)
+	if err != nil {
+		log.Println("Encountered error determining userID: " + err.Error())
+		cntxt.JSON(500, gin.H{"error": "Encountered unexpected error. Please try again later or contact the system administrator."})
+		return
+	}
+
 	newTask := models.Task{UserID: userID, Title: data.Title, Description: data.Description, Category: data.Category, Completed: *data.Completed}
 	res := env.DB.Create(&newTask)
 	if res.Error != nil {
@@ -60,9 +76,15 @@ func (env *Env) FindTasks(cntxt *gin.Context) {
 		params.Limit = 100
 	}
 
-	userID := uuid.MustParse("6c196332-778a-41f9-ba4f-c4291d16e242")
+	userID, err := env.GetUserID(cntxt)
+	if err != nil {
+		log.Println("Encountered error determining userID: " + err.Error())
+		cntxt.JSON(500, gin.H{"error": "Encountered unexpected error. Please try again later or contact the system administrator."})
+		return
+	}
+
 	var tasks []models.Task
-	env.DB.Limit(params.Limit).Offset((params.Page - 1) * params.Limit).Order("created_at desc").Find(&tasks)
+	env.DB.Limit(params.Limit).Offset((params.Page - 1) * params.Limit).Order("created_at desc").Where("user_id = " + userID.String()).Find(&tasks)
 
 	var cnt int64
 	env.DB.Model(&models.Task{}).Count(&cnt)

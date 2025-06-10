@@ -1,7 +1,12 @@
 package controllers
 
-import "gorm.io/gorm"
+import (
+	"crypto/rsa"
+
+	"gorm.io/gorm"
+)
 
 type Env struct {
-	DB *gorm.DB
+	DB        *gorm.DB
+	SecretKey *rsa.PrivateKey
 }

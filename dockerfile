@@ -1,0 +1,17 @@
+FROM golang:1.24.4 AS serverbuild
+
+WORKDIR /usr/src/app
+
+COPY task-manager-server-go/go.mod task-manager-server-go/go.sum ./
+RUN go mod download
+
+COPY task-manager-server-go/ ./
+# RUN go build -v .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v .
+
+FROM alpine
+
+WORKDIR /usr/src/app
+COPY --from=serverbuild /usr/src/app/.env .env
+COPY --from=serverbuild /usr/src/app/task-manager-server-go task-manager-server-go
+CMD ["./task-manager-server-go"]

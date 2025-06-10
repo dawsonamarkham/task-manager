@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: task-manager
+      POSTGRES_PASSWORD: task-manager
+  web:
+    image: task-manager-server-go
+    ports:
+      - "3000:3000"
+    restart: always
