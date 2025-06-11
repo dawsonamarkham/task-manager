@@ -7,8 +7,14 @@ services:
     environment:
       POSTGRES_USER: task-manager
       POSTGRES_PASSWORD: task-manager
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
   web:
-    image: task-manager-server-go
+    build:
+      context: .
+      dockerfile: ./dockerfile
+      network: host
+    env_file: ./server.env
     ports:
-      - "3000:3000"
+      - "3002:3000"
     restart: always

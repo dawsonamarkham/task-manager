@@ -26,13 +26,13 @@ func RegisterRoutes(app *gin.Engine, db *gorm.DB) {
 	app.POST("/signin", controllerEnv.CreateToken)
 	app.POST("/signup", controllerEnv.CreateUser)
 
-	app.Use(middlewareEnv.AuthMiddleware())
-	app.POST("/signout", controllerEnv.DestroyToken)
+	// app.Use(middlewareEnv.AuthMiddleware())
+	app.POST("/signout", middlewareEnv.AuthMiddleware(), controllerEnv.DestroyToken)
 
 	// Define task endpoints
-	app.POST("/tasks", controllerEnv.CreateTask)
-	app.GET("/tasks", controllerEnv.FindTasks)
-	app.GET("/tasks/:id", controllerEnv.FindTaskByID)
-	app.PUT("/tasks/:id", controllerEnv.UpdateTask)
-	app.DELETE("/tasks/:id", controllerEnv.DeleteTask)
+	app.POST("/tasks", middlewareEnv.AuthMiddleware(), controllerEnv.CreateTask)
+	app.GET("/tasks", middlewareEnv.AuthMiddleware(), controllerEnv.FindTasks)
+	app.GET("/tasks/:id", middlewareEnv.AuthMiddleware(), controllerEnv.FindTaskByID)
+	app.PUT("/tasks/:id", middlewareEnv.AuthMiddleware(), controllerEnv.UpdateTask)
+	app.DELETE("/tasks/:id", middlewareEnv.AuthMiddleware(), controllerEnv.DeleteTask)
 }
