@@ -1,0 +1,28 @@
+.Task-form-container {
+    min-width: 375px;
+}
+
+.Task-form-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0px;
+    border-bottom: thin solid #08F;
+}
+
+.Task-form-body {
+    min-height: 50px;
+}
+
+.Task-form-footer {
+    border-top: thin solid #08F;
+}
+
+.Add-task {
+    margin: 5px;
+    color: #08F;
+    background-color: white;
+    border-color: #08F;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
