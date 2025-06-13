@@ -29,6 +29,7 @@ interface TasksState {
     selectedID: string;
     retrieveError?: string;
     loading: boolean;
+    shouldScroll: boolean;
 }
 
 interface TasksProp {
@@ -54,7 +55,8 @@ class TasksForm extends Component<TasksProp, TasksState> {
             showDeleteModal: false,
             showViewModal: false,
             selectedID: '',
-            loading: true
+            loading: true,
+            shouldScroll: false
         }
         this.startCycle = this.startCycle.bind(this);
         this.handleCategorySelection = this.handleCategorySelection.bind(this);
@@ -113,12 +115,34 @@ class TasksForm extends Component<TasksProp, TasksState> {
     // If successful update task list. Otherwise, display error
     handleGetTasks(paginatedTasks?: PaginatedTaskData, err?: any): void {
         if (paginatedTasks) {
-            this.setState({
-                tasks: paginatedTasks.data,
-                total: paginatedTasks.total,
-                retrieveError: undefined,
-                loading: false
-            }, () => this.handleNoTasks());
+            // If should scroll, do so a moment after updating state
+            if (this.state.shouldScroll) {
+                this.setState({
+                    tasks: paginatedTasks.data,
+                    total: paginatedTasks.total,
+                    retrieveError: undefined,
+                    loading: false,
+                    shouldScroll: false
+                }, () => {
+                    this.handleNoTasks();
+                    setTimeout(() => {
+                        window.scroll({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+                    }, 50);
+                });
+            }
+            else {
+                this.setState({
+                    tasks: paginatedTasks.data,
+                    total: paginatedTasks.total,
+                    retrieveError: undefined,
+                    loading: false,
+                    shouldScroll: false
+                }, () => this.handleNoTasks());
+            }
         }
         // If unauthorized, send user back to Login form
         else if (err && axios.isAxiosError(err) && err.status === 401) {
@@ -126,7 +150,8 @@ class TasksForm extends Component<TasksProp, TasksState> {
         }
         else {
             this.setState({
-                retrieveError: 'Encounterd error when getting tasks.'
+                retrieveError: 'Encounterd error when getting tasks.',
+                loading: false
             }, () => this.handleNoTasks());
         }
     }
@@ -145,7 +170,8 @@ class TasksForm extends Component<TasksProp, TasksState> {
         }
         this.setState({
             prevQry: undefined,
-            categoryFilter: sel
+            categoryFilter: sel,
+            shouldScroll: true
         }, () => this.startCycle());
     }
 
@@ -155,7 +181,8 @@ class TasksForm extends Component<TasksProp, TasksState> {
         }
         this.setState({
             prevQry: undefined,
-            completionFilter: sel
+            completionFilter: sel,
+            shouldScroll: true
         }, () => this.startCycle());
     }
 
@@ -165,7 +192,8 @@ class TasksForm extends Component<TasksProp, TasksState> {
         }
         this.setState({
             prevQry: undefined,
-            page: pg
+            page: pg,
+            shouldScroll: true
         }, () => this.startCycle());
     }
 
