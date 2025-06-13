@@ -1,13 +1,6 @@
 REMAINING SERVER CODE:
-2. Finish task endpoints.
-3. Cleanup server code.
 
-REMAINING REACT CODE:\
-2. Signup/Signin page
-3. Paginated table that allows for quick viewing of tasks
-4. logout button
-5. Edit/Create task modal
-6. Delete button/confirmation
+REMAINING REACT CODE:
 
 OTHER:
 1. UPDATE README

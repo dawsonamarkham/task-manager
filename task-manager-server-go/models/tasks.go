@@ -6,9 +6,9 @@ import (
 
 type Task struct {
 	Model
-	UserID      uuid.UUID `gorm:"type:uuid;"`
-	Title       string
-	Description string
-	Category    string
-	Completed   bool
+	UserID      uuid.UUID `json:"userId" gorm:"type:uuid;"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Category    string    `json:"category"`
+	Completed   bool      `json:"completed"`
 }

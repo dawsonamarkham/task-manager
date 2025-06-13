@@ -10,6 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// Allows access to Public Key
 type Env struct {
 	PublicKey crypto.PublicKey
 }

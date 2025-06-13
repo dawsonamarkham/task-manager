@@ -12,6 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Define User POST data
 type UserInfo struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=8,max=72"`
@@ -26,7 +27,7 @@ func (env *Env) CreateUser(cntxt *gin.Context) {
 	}
 
 	// Make sure email does not exist
-	if err := env.DB.First(&models.User{Email: data.Email}).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+	if err := env.DB.Where("email = '" + data.Email + "'").First(&models.User{}).Error; errors.Is(err, gorm.ErrRecordNotFound) {
 		// Calculate Hash and create a new user entry
 		hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), 14)
 
@@ -45,7 +46,7 @@ func (env *Env) CreateUser(cntxt *gin.Context) {
 			return
 		}
 
-		// Create JWT
+		// Create and return JWT
 		expirationOffset := 10 * time.Minute
 		claims := &jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expirationOffset)),
@@ -69,6 +70,7 @@ func (env *Env) CreateUser(cntxt *gin.Context) {
 		return
 
 	} else {
+		// Notify User that an account already exists
 		cntxt.JSON(409, gin.H{"error": "An account is already associated with the provided email."})
 		return
 	}
@@ -79,13 +81,14 @@ func (env *Env) CreateToken(cntxt *gin.Context) {
 	// Validate request body
 	var data UserInfo
 	if err := cntxt.ShouldBindJSON(&data); err != nil {
-		cntxt.JSON(400, gin.H{"error": err.Error()})
+		// Don't validation failure
+		cntxt.JSON(400, gin.H{"error": "Email or password is incorrect."})
 		return
 	}
 
 	// Find user and hash
 	var user models.User
-	result := env.DB.First(&user)
+	result := env.DB.Where("email = '" + data.Email + "'").First(&user)
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		log.Println("Account does not exist.")
@@ -111,7 +114,7 @@ func (env *Env) CreateToken(cntxt *gin.Context) {
 		return
 	}
 
-	// Create JWT
+	// Create and return JWT
 	expirationOffset := 10 * time.Minute
 	claims := &jwt.RegisteredClaims{
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(expirationOffset)),

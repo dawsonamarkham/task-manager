@@ -12,7 +12,7 @@ import (
 )
 
 func RegisterRoutes(app *gin.Engine, db *gorm.DB) {
-	// Define namespace for controller functionality
+	// Define namespace for  accessing DB and Secret Key for controllers
 	secretKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(os.Getenv("SECRET_KEY")))
 
 	if err != nil {
@@ -25,8 +25,6 @@ func RegisterRoutes(app *gin.Engine, db *gorm.DB) {
 	// Define authorization endpoints
 	app.POST("/signin", controllerEnv.CreateToken)
 	app.POST("/signup", controllerEnv.CreateUser)
-
-	// app.Use(middlewareEnv.AuthMiddleware())
 	app.POST("/signout", middlewareEnv.AuthMiddleware(), controllerEnv.DestroyToken)
 
 	// Define task endpoints

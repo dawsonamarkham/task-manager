@@ -1,0 +1,59 @@
+.Form-container {
+    min-width: 360px;
+    margin: auto;
+    background-color: white;
+    padding: 10px 0px;
+}
+
+.Form-header {
+    font-weight: bold;
+    font-size: medium;
+}
+
+.Input-container {
+    width: 171px;
+    margin: auto;
+    font-size: small;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.Input-label {
+    margin-left: 5px;
+}
+
+.Input-warning {
+    font-size: smaller;
+    color: #f03;
+}
+
+.Input-field {
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.Large-button {
+    color: #FFF;
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: #08F;
+    background-color: #08f;
+    font-size: large;
+    font-weight: bold;
+    margin: 5px;
+    padding: 5px 20px
+}
+
+.Large-button:disabled {
+    color: lightgrey;
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: grey;
+    background-color: grey;
+    font-size: large;
+    font-weight: bold;
+    margin: 5px;
+    padding: 5px 20px
+}

@@ -2,19 +2,28 @@ services:
   postgres:
     image: postgres
     restart: always
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     environment:
       POSTGRES_USER: task-manager
       POSTGRES_PASSWORD: task-manager
     volumes:
       - ./postgres-data:/var/lib/postgresql
+  server:
+    build:
+      context: .
+      dockerfile: ./dockerfile.server
+      network: host
+    env_file: ./server.env
+    # ports:
+    #   - "3030:3030"
+    restart: always
   web:
     build:
       context: .
-      dockerfile: ./dockerfile
+      dockerfile: ./dockerfile.web
       network: host
-    env_file: ./server.env
+    env_file: ./web.env
     ports:
-      - "3002:3000"
+      - "3000:3000"
     restart: always

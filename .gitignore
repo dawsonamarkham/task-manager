@@ -2,3 +2,4 @@ node_modules
 build
 postgres-data
 .env
+task-manager-server-go/task-manager-server-go
