@@ -171,6 +171,7 @@ class TasksForm extends Component<TasksProp, TasksState> {
         this.setState({
             prevQry: undefined,
             categoryFilter: sel,
+            page: 1,
             shouldScroll: true
         }, () => this.startCycle());
     }
@@ -182,6 +183,7 @@ class TasksForm extends Component<TasksProp, TasksState> {
         this.setState({
             prevQry: undefined,
             completionFilter: sel,
+            page: 1,
             shouldScroll: true
         }, () => this.startCycle());
     }

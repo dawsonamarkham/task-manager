@@ -190,6 +190,10 @@ func (env *Env) UpdateTask(cntxt *gin.Context) {
 		cntxt.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	if !isValidCategory(data.Category) {
+		cntxt.JSON(400, gin.H{"error": "Category must be one of " + strings.Join(ValidCategories[:], ", ")})
+		return
+	}
 
 	// Retrieve Task
 	task, err := env.RetrieveTaskByPathID(cntxt)
