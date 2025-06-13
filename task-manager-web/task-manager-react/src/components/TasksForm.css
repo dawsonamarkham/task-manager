@@ -1,0 +1,88 @@
+.Task-form-container {
+    min-width: 360px;
+}
+
+.Task-form-header {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    max-width: 1200px;
+    padding: 5px 0px;
+}
+
+.Task-form-header-container {
+    border-bottom: thin solid #08F;
+    width: 100%;
+    background-color: white;
+}
+
+.Task-form-body-container {
+    width: 100%;
+    background-color: white;
+}
+
+.Task-form-body {
+    min-height: 50px;
+    min-width: 340px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.Task-form-grid {
+    box-sizing: content-box;
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(325px, 392px));
+    justify-content: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.Task-form-footer-container {
+    width: 100%;
+    border-top: thin solid #08F;
+    background-color: white;
+}
+
+.Task-form-footer {
+    margin: auto;
+    max-width: 600px;
+    padding: 0px 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Task-form-footer-disp {
+    padding: 5px;
+}
+
+.Add-task {
+    margin: 5px 5px 5px 3px;
+    color: #08F;
+    background-color: white;
+    border-color: #08F;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Page-button {
+    margin: 5px;
+    color: #08F;
+    background-color: white;
+    border-color: #08F;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Page-button:disabled {
+    margin: 5px;
+    color: grey;
+    background-color: white;
+    border-color: grey;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}

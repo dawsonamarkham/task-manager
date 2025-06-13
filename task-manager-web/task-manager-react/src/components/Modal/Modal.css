@@ -1,0 +1,108 @@
+.Modal-overlay {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: black;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.Modal {
+    margin: 10px auto;
+    max-width: 90%;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.Modal-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: thin solid lightgrey;
+}
+
+.Modal-title {
+    margin: 5px;
+    font-weight: bold;
+    font-size: large;
+    padding-top: 5px;
+}
+
+.Modal-header-close {
+    margin-right: 10px;
+    color: #888;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Modal-body {
+    padding: 10px;
+}
+
+.Modal-table {
+    margin: auto;
+    border-spacing: 0;
+}
+
+.Modal-left-cell {
+    text-align: left;
+    border-bottom: thin solid lightgrey;
+    padding-left: 15px;
+    padding-right: 5px;
+}
+
+.Modal-right-cell {
+    text-align: left;
+    border-bottom: thin solid lightgrey;
+    padding-right: 5px;
+    padding-right: 15px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.Modal-footer {
+    border-top: thin solid lightgrey;
+    font-weight: bolder;
+    display: flex;
+    justify-content: flex-end
+}
+
+.Modal-close-button {
+    margin: 5px;
+    color: #08F;
+    background-color: white;
+    border-color: #08F;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Modal-confirm-button {
+    color: #FFF;
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: #08F;
+    background-color: #08f;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.Modal-confirm-button:disabled {
+    color: lightgrey;
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: grey;
+    background-color: grey;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.Modal-warning {
+    text-align: center;
+    font-size: smaller;
+    color: #f03;
+}

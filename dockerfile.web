@@ -1,0 +1,29 @@
+FROM node:22.16.0 AS reactbuild
+
+WORKDIR /usr/src/app
+
+COPY task-manager-web/task-manager-react/package.json task-manager-web/task-manager-react/package-lock.json task-manager-web/task-manager-react/tsconfig.json ./
+RUN npm install
+
+COPY task-manager-web/task-manager-react ./
+RUN npm run build
+
+FROM node:22.16.0 AS expressbuild
+
+WORKDIR /usr/src/app
+
+COPY task-manager-web/task-manager-express/package.json task-manager-web/task-manager-express/package-lock.json task-manager-web/task-manager-express/tsconfig.json ./
+RUN npm install
+
+COPY task-manager-web/task-manager-express/ ./
+RUN npm run build
+
+FROM node:22.16.0
+
+WORKDIR /usr/src/app
+
+COPY --from=reactbuild /usr/src/app/build ./task-manager-react/build
+COPY --from=expressbuild /usr/src/app/. ./task-manager-express/
+
+CMD ["node", "./task-manager-express/build/server.js"]
+# CMD ["/bin/bash"]
